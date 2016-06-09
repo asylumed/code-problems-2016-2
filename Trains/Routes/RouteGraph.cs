@@ -55,10 +55,7 @@ namespace Trains.Routes
 
         public IEnumerable<Route> Walk(RouteNode startNode, Func<Route, bool> routeVisitor)
         {
-            foreach (var route in Walk(new Route(startNode, null, 0), routeVisitor))
-            {
-                yield return route;
-            }
+            return Walk(Route.CreateStart(startNode), routeVisitor);
         }
 
         private IEnumerable<Route> Walk(Route route, Func<Route, bool> routeVisitor)

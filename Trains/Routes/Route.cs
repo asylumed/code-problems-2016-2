@@ -10,11 +10,11 @@ namespace Trains.Routes
     [DebuggerDisplay("{ToString()} ({Distance})")]
     public class Route
     {
-        public Route(RouteNode endNode, Route startRoute, int distance)
+        private Route(RouteNode endNode, Route startRoute, int distance)
         {
-            this.StartRoute = startRoute;
-            this.End = endNode;
-            this.Distance = distance;
+            StartRoute = startRoute;
+            End = endNode;
+            Distance = distance;
         }
 
         public Route StartRoute { get; }
@@ -51,6 +51,11 @@ namespace Trains.Routes
             if (edge.Start != this.End) throw new InvalidOperationException($"Edge starting point {edge.Start} does not match route end poin {End}");
 
             return new Route(edge.End, this, this.Distance + edge.Distance);
+        }
+
+        internal static Route CreateStart(RouteNode startNode)
+        {
+            return new Route(startNode, null, 0);
         }
     }
 }
