@@ -13,12 +13,12 @@ namespace Trains.Routes
         public Route(RouteNode endNode, Route startRoute, int distance)
         {
             this.StartRoute = startRoute;
-            this.EndNode = endNode;
+            this.End = endNode;
             this.Distance = distance;
         }
 
         public Route StartRoute { get; }
-        public RouteNode EndNode { get; }
+        public RouteNode End { get; }
         public int Distance { get; }
 
         public int GetEdgeCount()
@@ -29,21 +29,28 @@ namespace Trains.Routes
 
         public bool Contains(RouteNode node)
         {
-            if (EndNode == node) return true;
+            if (End == node) return true;
             return StartRoute != null && StartRoute.Contains(node);
         }
 
         internal bool GetIsCyclic()
         {
             if (StartRoute == null) return false;
-            return StartRoute.GetIsCyclic() || StartRoute.Contains(EndNode);
+            return StartRoute.GetIsCyclic() || StartRoute.Contains(End);
         }
 
         public override string ToString()
         {
-            if (StartRoute == null) return EndNode.ToString();
-            return StartRoute.ToString() + EndNode.ToString();
+            if (StartRoute == null) return End.ToString();
+            return StartRoute.ToString() + End.ToString();
         }
 
+        public Route Extend(RouteEdge edge)
+        {
+            if (edge == null) throw new ArgumentNullException("edge");
+            if (edge.Start != this.End) throw new InvalidOperationException($"Edge starting point {edge.Start} does not match route end poin {End}");
+
+            return new Route(edge.End, this, this.Distance + edge.Distance);
+        }
     }
 }

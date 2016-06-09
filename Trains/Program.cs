@@ -21,25 +21,32 @@ namespace Trains
 
             var answer6 = routeGraph
                 .Walk('C', (route) => route.GetEdgeCount() <= 3)
-                .Where(route => route.EndNode == 'C' && route.GetEdgeCount() > 1)
+                .Where(route => route.End == 'C' && route.GetEdgeCount() > 1)
                 .Count();
 
             var answer7 = routeGraph
                 .Walk('A', (route) => route.GetEdgeCount() <= 4)
-                .Where(route => route.EndNode == 'C' && route.GetEdgeCount() == 4)
+                .Where(route => route.End == 'C' && route.GetEdgeCount() == 4)
                 .Count();
 
+            var answer8 = routeGraph
+                .Walk('A', (route) => !route.GetIsCyclic())
+                .Where(route => route.End == 'C' && route.GetEdgeCount() > 1)
+                .OrderBy(route => route.Distance)
+                .First()
+                .Distance;
+
             var answer9 = routeGraph
-                .Walk('B', (route) => !route.GetIsCyclic() || route.EndNode == 'B')
-                .Where(route => route.EndNode == 'B' && route.GetEdgeCount() > 1)
+                .Walk('B', (route) => !route.GetIsCyclic() || route.End == 'B')
+                .Where(route => route.End == 'B' && route.GetEdgeCount() > 1)
                 .OrderBy(route => route.Distance)
                 .First()
                 .Distance;
 
             var answer10 = routeGraph
-                .Walk('C', (route) => route.Distance < 80)
-                .Where(route => route.EndNode == 'C' && route.GetEdgeCount() > 1)
-                .ToArray();
+                .Walk('C', (route) => route.Distance < 30)
+                .Where(route => route.End == 'C' && route.GetEdgeCount() > 1)
+                .Count();
         }
     }
 }

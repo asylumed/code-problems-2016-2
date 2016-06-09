@@ -67,10 +67,10 @@ namespace Trains.Routes
             {
                 yield return route;
 
-                var edges = _edges[route.EndNode];
+                var edges = _edges[route.End];
                 foreach (var edge in edges)
                 {
-                    foreach (var childRoute in Walk(new Route(edge.End, route, route.Distance + edge.Distance), routeVisitor))
+                    foreach (var childRoute in Walk(route.Extend(edge), routeVisitor))
                     {
                         yield return childRoute;
                     }
